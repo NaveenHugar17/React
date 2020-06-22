@@ -34,7 +34,7 @@ renderComments(comments){
                             return (
                                 <li key={comm.id}>
                                     <p>{comm.comment}</p>
-                                    <p>-- {comm.author}, {comm.date}</p>
+                                    <p>-- {comm.author},{new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(comm.date)))}</p>
                                 </li>
                             );
                         })}
@@ -50,18 +50,20 @@ renderComments(comments){
 
 render()
 {
-    const dish=this.props.dishdetail;
+    const dish=this.props.dish;
     if(dish!=null)
         return(
-            <div className="row">
-                <div  className="col-12 col-md-5 m-1">
-                    {this.renderDish(dish)}
+            <div className="container">
+                <div className="row">
+                    <div  className="col-12 col-md-5 m-1">
+                        {this.renderDish(dish)}
+                    </div>
+                    <div  className="col-12 col-md-5 m-1">
+                        {this.renderComments(dish.comments)}
+                    </div>
                 </div>
-                <div  className="col-12 col-md-5 m-1">
-                    {this.renderComments(dish.comments)}
-                </div>
-
             </div>
+            
 
         );
     else
