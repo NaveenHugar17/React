@@ -3,6 +3,7 @@ import { Card, CardImg, CardText, CardBody,
     CardTitle, Breadcrumb, BreadcrumbItem,Modal, ModalHeader, ModalBody,Row,Col,Label,Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Control, LocalForm, Errors } from 'react-redux-form';
+import { Loading } from './LoadingComponent';
 
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
 const minLength = (len) => (val) => val && (val.length >= len);
@@ -101,6 +102,7 @@ class CommentForm extends Component{
 }
     
 function RenderDish({dish}) {  
+    
         return(
             <div>
                 <Card>
@@ -112,6 +114,7 @@ function RenderDish({dish}) {
                 </Card>
             </div>          
         ); 
+    
 }
 
 
@@ -143,7 +146,26 @@ function RenderComments({comments, addComment, dishId}){
 }
 
 const  DishDetail = (props) => {
-{  
+
+    if (props.isLoading) {
+        return(
+            <div className="container">
+                <div className="row">            
+                    <Loading />
+                </div>
+            </div>
+        );
+    }
+    else if (props.errMess) {
+        return(
+            <div className="container">
+                <div className="row">            
+                    <h4>{props.errMess}</h4>
+                </div>
+            </div>
+        );
+    }
+    else if (props.dish != null) {
         return(
             <div className="container">
                 <div className="row">
@@ -159,7 +181,9 @@ const  DishDetail = (props) => {
 
                 <div className="row">
                     <div  className="col-12 col-md-5 m-1">
-                        <RenderDish dish={props.dish} />
+                        <RenderDish dish={props.dish}  
+                        isLoading={props.dishesLoading}
+                        errMess={props.dishesErrMess}/>
                     </div>
                     <div  className="col-12 col-md-5 m-1">
                     <RenderComments comments={props.comments}
@@ -170,10 +194,8 @@ const  DishDetail = (props) => {
                 </div>
             </div>
         );
-    
-}
+        }
 
 }
-
 
 export default DishDetail;
